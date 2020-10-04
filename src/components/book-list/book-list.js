@@ -7,47 +7,45 @@ import { withBookstoreService } from '../hoc';
 import './book-list.css';
 
 class BookList extends Component {
+  componentDidMount() {
+    const { bookstoreService } = this.props;
+    const data = bookstoreService.getBooks();
+    console.log(data);
 
-    componentDidMount() {
-        const { bookstoreService } = this.props;
-        const data = bookstoreService.getBooks();
-        console.log(data);
+    this.props.booksLoaded(data);
+  }
 
-        this.props.booksLoaded(data);
-    }
-
-    render() {
-        const { books } = this.props;
-        return (
-            <ul>
-                {
-                    books.map((book) => {
-                        return (
-                            <li key={book.id}>
-                                <BookListItem book={book} />
-                            </li>
-                        )
-                    })
-                }
-            </ul>
-        )
-    }
-};
+  render() {
+    const { books } = this.props;
+    return (
+      <ul>
+        {books.map((book) => {
+          return (
+            <li key={book.id}>
+              <BookListItem book={book} />
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+}
 
 const mapStateToProps = ({ books }) => {
-    return { books };
+  return { books };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        booksLoaded: (newBooks) => {
-            dispatch({
-                type: 'BOOKS_LOADED',
-                payload: newBooks
-            });
-        }
-    };
+  return {
+    booksLoaded: (newBooks) => {
+      dispatch({
+        type: 'BOOKS_LOADED',
+        payload: newBooks,
+      });
+    },
+  };
 };
 
 export default withBookstoreService()(
-    connect(mapStateToProps, mapDispatchToProps)(BookList));
+  connect(mapStateToProps, mapDispatchToProps)(BookList),
+);
