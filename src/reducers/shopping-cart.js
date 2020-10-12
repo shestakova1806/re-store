@@ -42,11 +42,10 @@ const updateOrder = (state, bookId, quantity) => {
   const item = cartItems[itemIndex];
 
   const newItem = updateCartItem(book, item, quantity);
+  const updatedCartItems = updateCartItems(cartItems, newItem, itemIndex);
   return {
-    cartItems: updateCartItems(cartItems, newItem, itemIndex),
-    orderTotal: updateOrderTotal(
-      updateCartItems(cartItems, newItem, itemIndex),
-    ),
+    cartItems: updatedCartItems,
+    orderTotal: updateOrderTotal(updatedCartItems),
   };
 };
 
