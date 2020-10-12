@@ -21,6 +21,16 @@ const updateCartItem = (book, item = {}, quantity) => {
   };
 };
 
+const updateOrderTotal = (cartItems) => {
+  const arrOrderTotal = cartItems.map((item) => item.total);
+
+  const orderTotalPrice = arrOrderTotal.reduce((sum, current) => {
+    return sum + current;
+  }, 0);
+
+  return orderTotalPrice;
+};
+
 const updateOrder = (state, bookId, quantity) => {
   const {
     bookList: { books },
@@ -33,8 +43,8 @@ const updateOrder = (state, bookId, quantity) => {
 
   const newItem = updateCartItem(book, item, quantity);
   return {
-    orderTotal: 0,
     cartItems: updateCartItems(cartItems, newItem, itemIndex),
+    orderTotal: updateOrderTotal(cartItems),
   };
 };
 
