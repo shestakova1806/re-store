@@ -1,5 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import {
+  bookAddedToCart,
+  bookRemovedFromCart,
+  allBooksRemovedFromCart,
+} from '../../actions';
 
 import './shop-header.css';
 
@@ -19,4 +26,17 @@ const ShopHeader = ({ numItems, total }) => {
   );
 };
 
-export default ShopHeader;
+const mapStateToProps = ({ shoppingCart: { orderTotal, itemsTotal } }) => {
+  return {
+    total: orderTotal,
+    numItems: itemsTotal,
+  };
+};
+
+const mapDispatchToProps = {
+  onIncrease: bookAddedToCart,
+  onDecrease: bookRemovedFromCart,
+  onDelete: allBooksRemovedFromCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopHeader);
